@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import blogging from "../img/Blogging.png";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ const initialValues = {
   image: null,
 };
 const Signup = () => {
+  const [clicked, setClicked] = useState(0);
   const dispatch = useDispatch();
   const { msg, achieved } = useSelector((state) => state.user);
   useEffect(() => {
@@ -26,7 +27,7 @@ const Signup = () => {
         toast.success("You may login now");
       }
     }
-  }, [msg]);
+  }, [msg, clicked]);
 
   const { values, handleBlur, handleChange, handleSubmit, setFieldValue } =
     useFormik({
@@ -36,6 +37,7 @@ const Signup = () => {
         dispatch(createUser(values));
         // const { msg } = useSelector((state) => state.user);
         // toast.success(msg);
+        setClicked(clicked + 1);
       },
     });
   const handleFileChange = (event) => {
