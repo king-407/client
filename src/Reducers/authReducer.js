@@ -25,16 +25,47 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const loginUser = createAsyncThunk(
+  "loginUser",
+  async (data, { rejectWithValue }) => {
+    const response = await fetch("http://localhost:5000/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    try {
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const checkToken = createAsyncThunk("addtoken", () => {
+  const result = localStorage.getItem("token");
+  return result;
+});
+
 export const userDetail = createSlice({
   name: "userDetail",
   initialState: {
-    token: "",
+    token: null,
     loading: false,
     err: null,
-    msg: "",
+    loginMsg: null,
+    signupMsg: null,
     achieved: "",
   },
-  reducers: {},
+  reducers: {
+    setToken: (state, action) => {
+      state.token = action.payload;
+      localStorage.setItem("token", action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createUser.pending, (state) => {
@@ -44,7 +75,7 @@ export const userDetail = createSlice({
         console.log(action);
         console.log("entering");
         state.loading = false;
-        state.msg = action.payload.msg;
+        state.signupMsg = action.payload.msg;
         state.achieved = action.payload.success;
         console.log(action.payload);
       })
@@ -52,8 +83,32 @@ export const userDetail = createSlice({
         console.log("rejected");
         console.log(action);
         state.loading = false;
-        state.msg = action.payload.msg;
+        state.signupMsg = action.payload.msg;
         state.achieved = action.payload.success;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loginMsg = action.payload.msg;
+        state.achieved = action.payload.success;
+        if (action.payload.token) {
+          state.token = action.payload.token;
+          localStorage.setItem("token", action.payload.token);
+        }
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        console.log(action);
+        state.loading = false;
+        state.achieved = action.payload.success;
+        state.loginMsg = action.payload.msg;
+        console.log(state);
+      })
+      .addCase(checkToken.fulfilled, (state, action) => {
+        state.achieved = action.payload.success;
+
+        state.token = action.payload;
       });
   },
 });

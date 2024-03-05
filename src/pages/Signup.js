@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import blogging from "../img/Blogging.png";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../Reducers/authReducer";
+import { ToastContainer, toast } from "react-toastify";
 // import { signUpValidation } from "./signUpValidation/signUpValidation";
 
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const initialValues = {
   name: "",
@@ -18,16 +18,17 @@ const initialValues = {
 const Signup = () => {
   const [clicked, setClicked] = useState(0);
   const dispatch = useDispatch();
-  const { msg, achieved } = useSelector((state) => state.user);
+  const { signupMsg, achieved } = useSelector((state) => state.user);
+
   useEffect(() => {
-    if (msg) {
-      if (achieved != null && achieved == false) toast.error(msg);
+    if (signupMsg) {
+      if (achieved != null && achieved == false) toast.error(signupMsg);
       else if (achieved != null && achieved == true) {
-        toast.success(msg);
+        toast.success("Congratulations your account is cretated");
         toast.success("You may login now");
       }
     }
-  }, [msg, clicked]);
+  }, [signupMsg, clicked]);
 
   const { values, handleBlur, handleChange, handleSubmit, setFieldValue } =
     useFormik({
@@ -35,8 +36,7 @@ const Signup = () => {
 
       onSubmit: async (values) => {
         dispatch(createUser(values));
-        // const { msg } = useSelector((state) => state.user);
-        // toast.success(msg);
+
         setClicked(clicked + 1);
       },
     });
@@ -49,7 +49,7 @@ const Signup = () => {
         <img className="w-full" src={blogging} alt="Blogger" />
       </div>
       <div className="w-1/2 flex flex-col justify-center">
-        <h1 className="text-3xl sm:text-5xl dark:text-white">Login</h1>
+        <h1 className="text-3xl sm:text-5xl dark:text-white">Signup</h1>
         <form onSubmit={handleSubmit} className="w-full flex flex-col mt-5">
           <label className="text-xl sm:text-2xl dark:text-white m-4 ">
             Name:
@@ -128,7 +128,7 @@ const Signup = () => {
           <p className="text-white text-600 mt-2 mx-4">
             {" "}
             Already have an account ?
-            <Link to="/signup" className="text-blue mx-2">
+            <Link to="/" className="text-blue mx-2">
               Login
             </Link>
           </p>

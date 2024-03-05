@@ -1,19 +1,46 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import blogging from "../img/Blogging.png";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { checkToken, loginUser } from "../Reducers/authReducer";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 // import { signUpValidation } from "./signUpValidation/signUpValidation";
 const initialValues = {
   email: "",
   password: "",
 };
 const Login = () => {
+  const [clicked, setClicked] = useState(0);
+
+  const navigate = useNavigate();
+
+  const { token, achieved, loginMsg } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (loginMsg) {
+      if (achieved != null && achieved == false) toast.error(loginMsg);
+      else if (achieved != null && achieved == true) {
+        toast.success("Congratulations your account is cretated");
+        toast.success("You may login now");
+      }
+    }
+  }, [loginMsg, clicked]);
+
   const { values, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues,
 
     onSubmit: (values) => {
-      console.log("clicked");
-      console.log(values);
+      dispatch(loginUser(values));
+      setClicked(clicked + 1);
     },
   });
   return (
@@ -56,6 +83,7 @@ const Login = () => {
             name="Login"
             className="w-full sm:w-2/5 mx-3 bg-blue-500 mt-10 p-3 text-white rounded-full hover:bg-blue-300"
           >
+            <ToastContainer />
             Login
           </button>
           <p className="text-white text-600 mt-2 mx-4">

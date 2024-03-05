@@ -12,11 +12,15 @@ import {
 import Signup from "./pages/Signup";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import Dashboard from "./pages/Dashboard";
+import SpeceficPost from "./pages/SpeceficPost";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/posts/:postId" element={<SpeceficPost />} />
     </Route>
   )
 );
