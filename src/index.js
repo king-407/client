@@ -14,6 +14,8 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import Dashboard from "./pages/Dashboard";
 import SpeceficPost from "./pages/SpeceficPost";
+import Create from "./pages/Create";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -21,6 +23,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<Signup />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/posts/:postId" element={<SpeceficPost />} />
+      <Route path="/create" element={<Create />} />
     </Route>
   )
 );

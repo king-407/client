@@ -4,9 +4,9 @@ const PostCard = ({ post }) => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="mt-4 mb-5 bg-slate-700 rounded-2xl w-full  shadow-xl flex flex-col justify-center p-6">
+      <div className="mt-4 mb-5 bg-slate-800 rounded-2xl  w-4/5 shadow-xl flex flex-col justify-center p-6">
         <div className="flex flex-row w-full sm:w-1/2">
-          <img className=" w-1/6 rounded-full" src={post.user.image} />
+          <img className=" w-1/12 h-1/12 rounded-full" src={post.user.image} />
           <div className="mx-2">{post.user.user_name}</div>
         </div>
 
