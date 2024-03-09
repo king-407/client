@@ -1,38 +1,33 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const PostCard = ({ post }) => {
-  const navigate = useNavigate();
   return (
     <>
-      <div className="mt-4 mb-5 bg-slate-800 rounded-2xl  w-4/5 shadow-xl flex flex-col justify-center p-6">
-        <div className="flex flex-row w-full sm:w-1/2">
-          <img className=" w-1/12 h-1/12 rounded-full" src={post.user.image} />
-          <div className="mx-2">{post.user.user_name}</div>
-        </div>
+      <div className="max-w-sm shadow-purple-900 hover:shadow-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-4 h-3/4">
+        <img
+          className="rounded-t-lg object-cover w-full h-full"
+          src={post.image}
+          alt=""
+        />
 
-        <div className="mt-4 font-extrabold text-xl  italic">
-          " {post.title} "
-        </div>
+        <div className="p-5">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            "{post.title}"
+          </h5>
 
-        <div className="mt-6 font-medium">
-          {" "}
-          {post.content.length > 200
-            ? `${post.content.substring(0, 200)}...`
-            : post.content}
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            {post.content.length > 200
+              ? `${post.content.substring(0, 200)}...`
+              : post.content}
+          </p>
+          <NavLink
+            to={`/posts/${post._id}`}
+            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Read more
+          </NavLink>
         </div>
-        <div className="flex flex-row justify-end">
-          <img src={post.image} className=" mx-5 w-1/4" />
-        </div>
-        <button
-          className="w-1/2 p-3 rounded-2xl bg-teal-500"
-          onClick={() => {
-            navigate(`/posts/${post._id}`);
-          }}
-        >
-          View Post
-        </button>
       </div>
-      <hr className="w-full flex flex-row justify-center" />
     </>
   );
 };

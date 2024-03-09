@@ -3,7 +3,7 @@ import blogging from "../img/Blogging.png";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { checkToken, loginUser } from "../Reducers/authReducer";
+import { loginUser } from "../Reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 // import { signUpValidation } from "./signUpValidation/signUpValidation";
@@ -16,22 +16,20 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { token, achieved, loginMsg } = useSelector((state) => state.user);
+  const { loggedInUser, achieved, loginMsg } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (loggedInUser) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, [navigate, loggedInUser]);
 
   useEffect(() => {
     if (loginMsg) {
       if (achieved != null && achieved == false) toast.error(loginMsg);
-      else if (achieved != null && achieved == true) {
-        toast.success("Congratulations your account is cretated");
-        toast.success("You may login now");
-      }
     }
   }, [loginMsg, clicked]);
 
@@ -83,7 +81,6 @@ const Login = () => {
             name="Login"
             className="w-full sm:w-2/5 mx-3 bg-blue-500 mt-10 p-3 text-white rounded-full hover:bg-blue-300"
           >
-            <ToastContainer />
             Login
           </button>
           <p className="text-white text-600 mt-2 mx-4">

@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+console.log("auth reducer running");
+
 export const createUser = createAsyncThunk(
   "createUser",
   async (data, { rejectWithValue }) => {
@@ -38,6 +40,10 @@ export const loginUser = createAsyncThunk(
 
     try {
       const result = await response.json();
+
+      if (result.success) {
+        localStorage.setItem("user", JSON.stringify(result));
+      }
       return result;
     } catch (error) {
       return rejectWithValue(error);
@@ -49,11 +55,12 @@ export const checkToken = createAsyncThunk("addtoken", () => {
   const result = localStorage.getItem("token");
   return result;
 });
-
+const loggedInUser = localStorage.getItem("user");
+const user = JSON.parse(loggedInUser);
 export const userDetail = createSlice({
   name: "userDetail",
   initialState: {
-    token: null,
+    loggedInUser: user ? user : null,
     loading: false,
     err: null,
     loginMsg: null,
@@ -93,22 +100,20 @@ export const userDetail = createSlice({
         state.loading = false;
         state.loginMsg = action.payload.msg;
         state.achieved = action.payload.success;
-        if (action.payload.token) {
-          state.token = action.payload.token;
-          localStorage.setItem("token", action.payload.token);
+        if (action.payload.success) {
+          state.loggedInUser = action.payload;
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
         console.log(action);
         state.loading = false;
-        state.achieved = action.payload.success;
-        state.loginMsg = action.payload.msg;
+        // state.achieved = action.payload.success;
+        // state.loginMsg = action.payload.msg;
+
         console.log(state);
       })
       .addCase(checkToken.fulfilled, (state, action) => {
         state.achieved = action.payload.success;
-
-        state.token = action.payload;
       });
   },
 });

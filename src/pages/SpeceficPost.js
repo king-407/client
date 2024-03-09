@@ -1,26 +1,62 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPostById } from "../Reducers/postReducer";
-import { useParams } from "react-router-dom";
-import { getAllComments } from "../Reducers/CommentReducer";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAllComments, writeComment } from "../Reducers/CommentReducer";
+import { toast } from "react-toastify";
 import Comment from "./Comment";
 
 const SpeceficPost = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [baat, setBaat] = useState("");
+  const [clicked, setClicked] = useState(0);
   const { postId } = useParams();
+
+  const { loggedInUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (loggedInUser == null) {
+      navigate("/");
+    }
+  }, [loggedInUser, navigate]);
+
   useEffect(() => {
     dispatch(getPostById(postId));
   }, []);
 
+  const { achieved, commentMessage, loading } = useSelector(
+    (state) => state.comments
+  );
+
+  useEffect(() => {
+    console.log("status changed");
+    if (achieved != null && achieved == false) toast.error(commentMessage);
+    else if (achieved != null && achieved == true) {
+      toast.success(commentMessage);
+    }
+  }, [achieved, loading]);
+
   useEffect(() => {
     dispatch(getAllComments(postId));
-    console.log("inside the get comments");
   }, []);
 
   const { singlePost } = useSelector((state) => state.posts);
 
   const { comments } = useSelector((state) => state.comments);
+
+  const handleInputChange = (event) => {
+    setBaat(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = { comment: baat, postId };
+    dispatch(writeComment(data));
+    setClicked(clicked + 1);
+    setBaat("");
+  };
 
   // if (!singlePost) {
   //   return <div>Loading...</div>;
@@ -81,9 +117,12 @@ const SpeceficPost = () => {
               <label for="comment" class="sr-only">
                 Your comment
               </label>
+
               <textarea
                 id="comment"
                 rows="6"
+                value={baat}
+                onChange={handleInputChange}
                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                 placeholder="Write a comment..."
                 required
@@ -91,6 +130,8 @@ const SpeceficPost = () => {
             </div>
             <button
               type="submit"
+              name="commentBox"
+              onClick={handleSubmit}
               class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-500"
             >
               Post comment

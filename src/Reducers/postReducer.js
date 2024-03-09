@@ -1,8 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+console.log("post reducer running");
 export const getAllPosts = createAsyncThunk(
   "getAllPosts",
   async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    const responseDataObject = JSON.parse(user);
+    const token = responseDataObject.token;
     try {
       const response = await fetch("http://localhost:5000/posts/getPosts", {
         method: "GET",
@@ -28,7 +33,10 @@ export const createPost = createAsyncThunk(
   "createPost",
   async (data, { rejectWithValue }) => {
     console.log("data", data);
-    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    const responseDataObject = JSON.parse(user);
+    const token = responseDataObject.token;
 
     const formData = new FormData();
     formData.append("title", data.title);
@@ -58,7 +66,10 @@ export const getPostById = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("running in postId");
     console.log("In the reducer " + postId);
-    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    const responseDataObject = JSON.parse(user);
+    const token = responseDataObject.token;
     try {
       const response = await fetch(
         `http://localhost:5000/posts/getPosts/${postId}`,

@@ -1,6 +1,5 @@
-import { React, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllComments } from "../Reducers/CommentReducer";
+import { React } from "react";
+
 const Comment = ({ comment }) => {
   return (
     <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">

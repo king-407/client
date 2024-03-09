@@ -15,6 +15,8 @@ import { Provider } from "react-redux";
 import Dashboard from "./pages/Dashboard";
 import SpeceficPost from "./pages/SpeceficPost";
 import Create from "./pages/Create";
+import { ToastContainer } from "react-toastify";
+import FindPeople from "./pages/FindPeople";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/posts/:postId" element={<SpeceficPost />} />
       <Route path="/create" element={<Create />} />
+      <Route path="/findpeople" element={<FindPeople />} />
     </Route>
   )
 );
@@ -33,6 +36,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <ToastContainer />
     </Provider>
   </React.StrictMode>
 );

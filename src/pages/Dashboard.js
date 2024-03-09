@@ -2,10 +2,21 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getAllPosts } from "../Reducers/postReducer";
+
 import PostCard from "./PostCard";
+import Tabs from "./Tabs";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loggedInUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (loggedInUser == null) {
+      navigate("/");
+    }
+  }, [loggedInUser, navigate]);
+
   useEffect(() => {
     dispatch(getAllPosts());
   }, []);
@@ -41,16 +52,13 @@ const Dashboard = () => {
           <div className=" w-1/2 sm:sticky sm:top-0 sm:h-full overflow-y-auto"></div>
         </div>
       </section> */}
+
+        <Tabs />
         <section className="max-w-4xl mx-auto">
-          <div className="flex flex-col items-center mt-10 sm:flex-row ">
-            <div className=" flex flex-col items-center">
-              {posts.map((post, index) => (
-                <PostCard key={index} post={post} />
-              ))}
-            </div>
-            <div className="hidden md:block w-1/2 md:sticky sm:top-0 sm:h-full overflow-y-auto">
-              {/* Your content for the second column goes here */}
-            </div>
+          <div className=" flex flex-col md:flex-row items-center justify-center flex-wrap">
+            {posts.map((post, index) => (
+              <PostCard key={index} post={post} />
+            ))}
           </div>
         </section>
       </div>
