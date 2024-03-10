@@ -31,14 +31,6 @@ const SpeceficPost = () => {
   );
 
   useEffect(() => {
-    console.log("status changed");
-    if (achieved != null && achieved == false) toast.error(commentMessage);
-    else if (achieved != null && achieved == true) {
-      toast.success(commentMessage);
-    }
-  }, [achieved, loading]);
-
-  useEffect(() => {
     dispatch(getAllComments(postId));
   }, []);
 
@@ -53,7 +45,9 @@ const SpeceficPost = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = { comment: baat, postId };
-    dispatch(writeComment(data));
+    dispatch(writeComment(data)).then(() => {
+      dispatch(getAllComments(data.postId));
+    });
     setClicked(clicked + 1);
     setBaat("");
   };
@@ -105,16 +99,16 @@ const SpeceficPost = () => {
         </section>
       </main>
 
-      <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
-        <div class="max-w-2xl mx-auto px-4">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
+      <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
               Discussion
             </h2>
           </div>
-          <form class="mb-6">
-            <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-              <label for="comment" class="sr-only">
+          <form className="mb-6">
+            <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+              <label for="comment" className="sr-only">
                 Your comment
               </label>
 
@@ -123,7 +117,7 @@ const SpeceficPost = () => {
                 rows="6"
                 value={baat}
                 onChange={handleInputChange}
-                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                 placeholder="Write a comment..."
                 required
               ></textarea>
@@ -132,7 +126,7 @@ const SpeceficPost = () => {
               type="submit"
               name="commentBox"
               onClick={handleSubmit}
-              class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-500"
+              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-500"
             >
               Post comment
             </button>

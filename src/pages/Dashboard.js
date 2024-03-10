@@ -5,55 +5,58 @@ import { getAllPosts } from "../Reducers/postReducer";
 
 import PostCard from "./PostCard";
 import Tabs from "./Tabs";
+import Spinner from "./Spinner";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  /// getting loggedin user ///
   const { loggedInUser } = useSelector((state) => state.user);
 
+  /// checking if logged in or not ////
   useEffect(() => {
     if (loggedInUser == null) {
       navigate("/");
     }
   }, [loggedInUser, navigate]);
 
+  /// fetching all post //
   useEffect(() => {
     dispatch(getAllPosts());
   }, []);
-  const { posts } = useSelector((state) => state.posts);
-  console.log(posts);
+
+  //// hetting post from the reducer //
+  const { posts, loading } = useSelector((state) => state.posts);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen h bg-black flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <>
-      <div class=" min-h-screen bg-black text-white">
-        <div class="bg-teal-700 text-white top-0">
-          <section class="flex items-center justify-between max-w-4xl mx-auto p-1">
-            <h1 class="text-3xl font-medium p-3">🚀 Large</h1>
+      <div className=" min-h-screen bg-black text-white">
+        <div className="bg-teal-700 text-white top-0">
+          <section className="flex items-center justify-between max-w-4xl mx-auto p-1">
+            <h1 className="text-3xl font-medium p-3">🚀 Large</h1>
             <NavLink to="/create" className="text-400">
               Create
             </NavLink>
-            <div class="mx-4">
+            <div className="mx-4">
               <button
                 id="mobile-open-button"
-                class="text-3xl sm:hidden focus:outline-none"
+                className="text-3xl sm:hidden focus:outline-none"
               >
                 &#9776;
               </button>
             </div>
           </section>
         </div>
-
-        {/* <section className="max-w-4xl mx-auto">
-        <div className=" flex flex-col w-full sm:flex-row justify-center mt-10 sm:justify-start ">
-          <div className="post-section w-3/4 sm:w-1/2 flex flex-col items-center">
-            {posts.map((post, index) => (
-              <PostCard key={index} post={post} />
-            ))}
-          </div>
-          <div className=" w-1/2 sm:sticky sm:top-0 sm:h-full overflow-y-auto"></div>
-        </div>
-      </section> */}
-
         <Tabs />
+        {/* Individual Post going to the card  */}
         <section className="max-w-4xl mx-auto">
           <div className=" flex flex-col md:flex-row items-center justify-center flex-wrap">
             {posts.map((post, index) => (

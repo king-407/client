@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../Reducers/authReducer";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-// import { signUpValidation } from "./signUpValidation/signUpValidation";
+import { toast } from "react-toastify";
+import { signUpValidation } from "../validations/signUpValidation";
+
 const initialValues = {
   email: "",
   password: "",
@@ -31,14 +32,15 @@ const Login = () => {
     if (loginMsg) {
       if (achieved != null && achieved == false) toast.error(loginMsg);
     }
-  }, [loginMsg, clicked]);
+  }, [clicked]);
 
-  const { values, handleBlur, handleChange, handleSubmit } = useFormik({
+  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
-
+    validationSchema: signUpValidation,
     onSubmit: (values) => {
-      dispatch(loginUser(values));
-      setClicked(clicked + 1);
+      dispatch(loginUser(values)).then(() => {
+        setClicked(clicked + 1);
+      });
     },
   });
   return (
@@ -61,9 +63,9 @@ const Login = () => {
             onChange={handleChange}
             className="placeholder:text-black-500 placeholder:italic  mx-3 p-3 rounded-3xl w-full sm:w-3/5 border border-gray-300 shadow-sm"
           ></input>
-          {/* {errors.email && (
-            <small className="text-white mt-2">* {errors.email}</small>
-          )} */}
+          {errors.email && (
+            <span className="text-red-800 font-bold">* {errors.email}</span>
+          )}
           <label className="text-xl sm:text-2xl dark:text-white m-4 ">
             Password:
           </label>
@@ -76,6 +78,9 @@ const Login = () => {
             placeholder="Enter your email"
             className="placeholder:text-black-300 placeholder:italic  mx-3 p-3 rounded-3xl w-full sm:w-3/5 border border-gray-300 shadow-sm"
           ></input>
+          {errors.password && (
+            <span className="text-red-800 font-bold">* {errors.password}</span>
+          )}
           <button
             type="submit"
             name="Login"

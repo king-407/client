@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../Reducers/postReducer";
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "./Spinner";
+import { postValidation } from "../validations/postValidation";
 const initialValues = {
   content: "",
   title: "",
@@ -13,55 +15,66 @@ const initialValues = {
   image: null,
 };
 const Create = () => {
-  const [clicked, setClicked] = useState(0);
-
   const navigate = useNavigate();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const dispatch = useDispatch();
   const { postMessage, achieved, loading } = useSelector(
     (state) => state.posts
   );
 
+  const { loggedInUser } = useSelector((state) => state.user);
   useEffect(() => {
-    if (localStorage.getItem("token") == null) {
+    if (loggedInUser == null) {
       navigate("/");
     }
   }, [navigate]);
 
-  useEffect(() => {
-    if (achieved != null && achieved == false && loading === false)
-      toast.error(postMessage);
-    else if (achieved != null && achieved == true && loading === false) {
-      toast.success(postMessage);
-    }
-  }, [loading]);
+  // useEffect(() => {
+  //   if (achieved == true) toast.success(postMessage);
+  // }, [achieved]);
 
-  const { values, handleBlur, handleChange, handleSubmit, setFieldValue } =
-    useFormik({
-      initialValues: initialValues,
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    errors,
+  } = useFormik({
+    initialValues: initialValues,
+    validationSchema: postValidation,
+    onSubmit: (values) => {
+      setFormSubmitted(true);
 
-      onSubmit: (values) => {
-        dispatch(createPost(values));
-        setClicked(clicked + 1);
-      },
-    });
+      dispatch(createPost(values));
+    },
+  });
 
   const handleFileChange = (event) => {
     setFieldValue("image", event.currentTarget.files[0]);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen h bg-black flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <div class=" min-h-screen bg-black text-white">
-      <div class="bg-teal-700 text-white top-0">
-        <section class="flex items-center justify-between max-w-4xl mx-auto p-1">
-          <h1 class="text-3xl font-medium p-3">🚀 Large</h1>
+    <div className=" min-h-screen bg-black text-white">
+      <div className="bg-teal-700 text-white top-0">
+        <section className="flex items-center justify-between max-w-4xl mx-auto p-1">
+          <h1 className="text-3xl font-medium p-3">🚀 Large</h1>
           <NavLink to="/create" className="text-400">
             Create
           </NavLink>
-          <div class="mx-4">
+          <div className="mx-4">
             <button
               id="mobile-open-button"
-              class="text-3xl sm:hidden focus:outline-none"
+              className="text-3xl sm:hidden focus:outline-none"
             >
               &#9776;
             </button>
@@ -90,6 +103,9 @@ const Create = () => {
               onChange={handleChange}
               className="placeholder:text-black-500 placeholder:italic  mx-6 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm  text-black"
             ></input>
+            {errors.title && (
+              <span className="text-red-800 font-bold">*{errors.title}</span>
+            )}
           </div>
 
           <div className="w-full flex flex-col md:flex-row justify-center items-center mt-6">
@@ -103,10 +119,13 @@ const Create = () => {
               onChange={handleChange}
               className="placeholder:text-black-500 placeholder:italic  mx-2 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm  text-black"
             ></input>
+            {formSubmitted && errors.category && (
+              <span className="text-red-800 font-bold">*{errors.category}</span>
+            )}
           </div>
 
           <div className="w-full flex flex-col md:flex-row justify-center items-center mt-6">
-            <label for="message" class="text-xl sm:text-2xl  m-2 ">
+            <label htmlFor="message" className="text-xl sm:text-2xl  m-2 ">
               Content :
             </label>
             <textarea
@@ -117,23 +136,29 @@ const Create = () => {
               value={values.content}
               onBlur={handleBlur}
               onChange={handleChange}
-              class="placeholder:text-black-500 placeholder:italic  mx-3 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm text-black"
+              className="placeholder:text-black-500 placeholder:italic  mx-3 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm text-black"
               placeholder="Write your thoughts here..."
             ></textarea>
+            {formSubmitted && errors.content && (
+              <span className="text-red-800 font-bold">*{errors.content}</span>
+            )}
           </div>
 
           <div className="w-full flex flex-col md:flex-row justify-center items-center mt-6">
-            <label for="message" class="text-xl sm:text-2xl  m-2 ">
+            <label htmlFor="message" className="text-xl sm:text-2xl  m-2 ">
               Image :
             </label>
 
             <input
-              class="block w-1/4 text-sm mx-5  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              className="block w-1/4 text-sm mx-5  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               id="file_input"
               type="file"
               name="image"
               onChange={handleFileChange}
             />
+            {formSubmitted && errors.image && (
+              <span className="text-red-800 font-bold">*{errors.image}</span>
+            )}
           </div>
           <button
             type="submit"
@@ -142,7 +167,6 @@ const Create = () => {
           >
             Post
           </button>
-          <ToastContainer />
         </form>
       </div>
     </div>
