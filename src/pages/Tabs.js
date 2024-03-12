@@ -21,7 +21,7 @@ const Tabs = () => {
           activeClassName="active-tab"
           className="inline-block p-4 rounded-t-lg hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300 dark:hover:text-gray-300 mx-5"
         >
-          Your Post
+          Find Techies
         </NavLink>
       </li>
       <li className="me-2">
@@ -31,7 +31,7 @@ const Tabs = () => {
           activeClassName="active-tab"
           className="inline-block p-4 rounded-t-lg hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300 dark:hover:text-gray-300 mx-5"
         >
-          Discover People
+          Create Post
         </NavLink>
       </li>
     </ul>

@@ -7,7 +7,7 @@ import { loginUser } from "../Reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signUpValidation } from "../validations/signUpValidation";
-
+import { resetState } from "../Reducers/authReducer";
 const initialValues = {
   email: "",
   password: "",
@@ -21,6 +21,12 @@ const Login = () => {
     (state) => state.user
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -93,6 +99,12 @@ const Login = () => {
             Don't have an account ?
             <Link to="/signup" className="text-blue mx-2">
               Register
+            </Link>
+          </p>
+          <p className="text-white text-600 mt-2 mx-4">
+            {" "}
+            <Link to="/forgot" className="text-blue mx-2 hover:to-blue-300">
+              Forgot Password ?
             </Link>
           </p>
         </form>

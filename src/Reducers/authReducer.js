@@ -68,9 +68,13 @@ export const userDetail = createSlice({
     achieved: "",
   },
   reducers: {
-    setToken: (state, action) => {
-      state.token = action.payload;
-      localStorage.setItem("token", action.payload);
+    resetState: (state) => {
+      state.loginMsg = null;
+      state.signupMsg = null;
+    },
+    logout: (state) => {
+      localStorage.removeItem("user");
+      state.loggedInUser = null;
     },
   },
   extraReducers: (builder) => {
@@ -117,5 +121,5 @@ export const userDetail = createSlice({
       });
   },
 });
-export const {} = userDetail.actions;
+export const { resetState, logout } = userDetail.actions;
 export default userDetail.reducer;

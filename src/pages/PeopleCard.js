@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { followUser, getAllUser } from "../Reducers/userReducer";
+import { useNavigate } from "react-router-dom";
 
 const PeopleCard = ({ user, loggedIn }) => {
   console.log(user);
   const dispatch = useDispatch();
-
+  const nav = useNavigate();
+  const seePost = () => {
+    nav(`/user/post/${user._id}`);
+  };
   return (
     <div className="w-3/4 sm:w-1/4 p-4  bg-gray-900 rounded-3xl overflow-hidden hover: mx-5 mb-7 box-border ">
       <div className="border-b px-4 pb-6">
@@ -63,8 +67,11 @@ const PeopleCard = ({ user, loggedIn }) => {
               Follow
             </button>
           )}
-          <button className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2">
-            View Profile
+          <button
+            className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2"
+            onClick={seePost}
+          >
+            See Posts
           </button>
         </div>
       </div>

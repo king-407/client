@@ -3,10 +3,11 @@ import { NavLink } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createPost } from "../Reducers/postReducer";
+import { createPost, resetState } from "../Reducers/postReducer";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "./Spinner";
 import { postValidation } from "../validations/postValidation";
+import { logout } from "../Reducers/authReducer";
 const initialValues = {
   content: "",
   title: "",
@@ -17,7 +18,7 @@ const initialValues = {
 const Create = () => {
   const navigate = useNavigate();
   const [formSubmitted, setFormSubmitted] = useState(false);
-
+  const [clicked, setClicked] = useState(0);
   const dispatch = useDispatch();
   const { postMessage, achieved, loading } = useSelector(
     (state) => state.posts
@@ -28,11 +29,17 @@ const Create = () => {
     if (loggedInUser == null) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [loggedInUser, navigate]);
 
-  // useEffect(() => {
-  //   if (achieved == true) toast.success(postMessage);
-  // }, [achieved]);
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (postMessage) if (achieved == true) toast.success(postMessage);
+  }, [clicked]);
 
   const {
     values,
@@ -45,9 +52,9 @@ const Create = () => {
     initialValues: initialValues,
     validationSchema: postValidation,
     onSubmit: (values) => {
-      setFormSubmitted(true);
-
-      dispatch(createPost(values));
+      dispatch(createPost(values)).then(() => {
+        setClicked(clicked + 1);
+      });
     },
   });
 
@@ -62,23 +69,21 @@ const Create = () => {
       </div>
     );
   }
-
+  const signOut = () => {
+    dispatch(logout());
+  };
   return (
     <div className=" min-h-screen bg-black text-white">
       <div className="bg-teal-700 text-white top-0">
         <section className="flex items-center justify-between max-w-4xl mx-auto p-1">
           <h1 className="text-3xl font-medium p-3">🚀 Large</h1>
-          <NavLink to="/create" className="text-400">
-            Create
-          </NavLink>
-          <div className="mx-4">
-            <button
-              id="mobile-open-button"
-              className="text-3xl sm:hidden focus:outline-none"
-            >
-              &#9776;
-            </button>
-          </div>
+          <button
+            onClick={signOut}
+            name="Signup"
+            className=" w-[12%]  bg-red-500  p-2 text-white rounded-full hover:bg-red-300"
+          >
+            Logout
+          </button>
         </section>
       </div>
       <div className="flex flex-row justify-center my-4 text-3xl sm:text-4xl font-medium">
@@ -104,7 +109,7 @@ const Create = () => {
               className="placeholder:text-black-500 placeholder:italic  mx-6 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm  text-black"
             ></input>
             {errors.title && (
-              <span className="text-red-800 font-bold">*{errors.title}</span>
+              <span className="text-red-800 font-bold"> *{errors.title}</span>
             )}
           </div>
 
@@ -119,7 +124,7 @@ const Create = () => {
               onChange={handleChange}
               className="placeholder:text-black-500 placeholder:italic  mx-2 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm  text-black"
             ></input>
-            {formSubmitted && errors.category && (
+            {errors.category && (
               <span className="text-red-800 font-bold">*{errors.category}</span>
             )}
           </div>
@@ -139,7 +144,7 @@ const Create = () => {
               className="placeholder:text-black-500 placeholder:italic  mx-3 p-3 rounded-3xl w-3/4 md:w-1/4 border border-gray-300 shadow-sm text-black"
               placeholder="Write your thoughts here..."
             ></textarea>
-            {formSubmitted && errors.content && (
+            {errors.content && (
               <span className="text-red-800 font-bold">*{errors.content}</span>
             )}
           </div>
@@ -156,7 +161,7 @@ const Create = () => {
               name="image"
               onChange={handleFileChange}
             />
-            {formSubmitted && errors.image && (
+            {errors.image && (
               <span className="text-red-800 font-bold">*{errors.image}</span>
             )}
           </div>

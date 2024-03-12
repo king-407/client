@@ -9,13 +9,45 @@ export const getAllPosts = createAsyncThunk(
     const responseDataObject = JSON.parse(user);
     const token = responseDataObject.token;
     try {
-      const response = await fetch("http://localhost:5000/posts/getPosts", {
+      const response = await fetch("http://localhost:5000/posts/getAllPosts", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error); // Pass error message instead of the entire error object
+    }
+  }
+);
+
+export const getAllUserPost = createAsyncThunk(
+  "getAllUserPost",
+  async (userId, { rejectWithValue }) => {
+    const user = localStorage.getItem("user");
+
+    const responseDataObject = JSON.parse(user);
+    const token = responseDataObject.token;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/posts/getAllPosts/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
@@ -99,11 +131,16 @@ export const applicationPosts = createSlice({
   initialState: {
     posts: [],
     singlePost: {},
+    userPosts: [],
     postMessage: null,
     achieved: null,
     loading: null,
   },
-  reducers: {},
+  reducers: {
+    resetState: (state) => {
+      state.postMessage = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllPosts.pending, (state) => {
@@ -137,8 +174,17 @@ export const applicationPosts = createSlice({
         state.postMessage = action.payload.msg;
         state.achieved = action.payload.success;
       })
-      .addCase(createPost.rejected, (state, action) => {});
+      .addCase(createPost.rejected, (state, action) => {})
+
+      .addCase(getAllUserPost.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getAllUserPost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userPosts = action.payload;
+      })
+      .addCase(getAllUserPost.rejected, (action, state) => {});
   },
 });
-export const {} = applicationPosts.actions;
+export const { resetState } = applicationPosts.actions;
 export default applicationPosts.reducer;

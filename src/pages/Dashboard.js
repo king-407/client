@@ -6,7 +6,7 @@ import { getAllPosts } from "../Reducers/postReducer";
 import PostCard from "./PostCard";
 import Tabs from "./Tabs";
 import Spinner from "./Spinner";
-
+import { logout } from "../Reducers/authReducer";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,6 +20,10 @@ const Dashboard = () => {
       navigate("/");
     }
   }, [loggedInUser, navigate]);
+
+  const signOut = () => {
+    dispatch(logout());
+  };
 
   /// fetching all post //
   useEffect(() => {
@@ -36,23 +40,20 @@ const Dashboard = () => {
       </div>
     );
   }
+
   return (
     <>
       <div className=" min-h-screen bg-black text-white">
         <div className="bg-teal-700 text-white top-0">
-          <section className="flex items-center justify-between max-w-4xl mx-auto p-1">
+          <section className="flex items-center justify-between max-w-4xl mx-auto ">
             <h1 className="text-3xl font-medium p-3">🚀 Large</h1>
-            <NavLink to="/create" className="text-400">
-              Create
-            </NavLink>
-            <div className="mx-4">
-              <button
-                id="mobile-open-button"
-                className="text-3xl sm:hidden focus:outline-none"
-              >
-                &#9776;
-              </button>
-            </div>
+            <button
+              onClick={signOut}
+              name="Signup"
+              className=" w-[12%]  bg-red-500  p-2 text-white rounded-full hover:bg-red-300"
+            >
+              Logout
+            </button>
           </section>
         </div>
         <Tabs />

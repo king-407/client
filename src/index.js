@@ -17,6 +17,9 @@ import SpeceficPost from "./pages/SpeceficPost";
 import Create from "./pages/Create";
 import { ToastContainer } from "react-toastify";
 import FindPeople from "./pages/FindPeople";
+import ResetPassword from "./pages/ResetPassword";
+import Forgot from "./pages/Forgot";
+import UserPost from "./pages/UserPost";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +30,9 @@ const router = createBrowserRouter(
       <Route path="/posts/:postId" element={<SpeceficPost />} />
       <Route path="/create" element={<Create />} />
       <Route path="/findpeople" element={<FindPeople />} />
+      <Route path="/forgot" element={<Forgot />} />
+      <Route path="/users/reset/:resetId" element={<ResetPassword />} />
+      <Route path="/user/post/:userId" element={<UserPost />} />
     </Route>
   )
 );
