@@ -34,6 +34,7 @@ export const loginUser = createAsyncThunk(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Content-Security-Policy": "upgrade-insecure-requests",
       },
       body: JSON.stringify(data),
     });
