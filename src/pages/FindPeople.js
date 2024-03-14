@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUser } from "../Reducers/userReducer";
 import PeopleCard from "./PeopleCard";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../Reducers/authReducer";
 import Spinner from "./Spinner";
 const FindPeople = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,10 @@ const FindPeople = () => {
     }
   }, [loggedInUser, navigate]);
 
+  const signOut = () => {
+    dispatch(logout());
+  };
+
   ///// displaying the spinner if loading ////
   if (loading) {
     return (
@@ -35,7 +40,19 @@ const FindPeople = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-gray-700  pt-12">
+    <div className=" min-h-screen bg-black text-white">
+      <div className="bg-teal-700 text-white top-0">
+        <section className="flex items-center justify-between max-w-4xl mx-auto ">
+          <h1 className="text-3xl font-medium p-3">🚀 Large</h1>
+          <button
+            onClick={signOut}
+            name="Signup"
+            className=" w-[12%]  bg-red-500  p-2 text-white rounded-full hover:bg-red-300"
+          >
+            Logout
+          </button>
+        </section>
+      </div>
       <div className="flex flex-col md:flex-row flex-wrap space-y-2 justify-center items-center mt-4 mb-5  ">
         {users.length > 0 &&
           users.map((user, index) => (

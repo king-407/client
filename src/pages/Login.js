@@ -55,11 +55,9 @@ const Login = () => {
         <img className="w-full" src={blogging} alt="Blogger" />
       </div>
       <div className="w-1/2 flex flex-col justify-center">
-        <h1 className="text-3xl sm:text-5xl dark:text-white">Login</h1>
+        <h1 className="text-3xl sm:text-5xl text-white">Login</h1>
         <form onSubmit={handleSubmit} className="w-full flex flex-col mt-5">
-          <label className="text-xl sm:text-2xl dark:text-white m-4 ">
-            Email:
-          </label>
+          <label className="text-xl sm:text-2xl text-white m-4 ">Email:</label>
           <input
             type="text"
             name="email"
@@ -72,7 +70,7 @@ const Login = () => {
           {errors.email && (
             <span className="text-red-800 font-bold">* {errors.email}</span>
           )}
-          <label className="text-xl sm:text-2xl dark:text-white m-4 ">
+          <label className="text-xl sm:text-2xl text-white m-4 ">
             Password:
           </label>
           <input

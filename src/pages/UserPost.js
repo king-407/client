@@ -32,7 +32,7 @@ const UserPost = () => {
           <button
             onClick={signOut}
             name="Signup"
-            className=" w-[12%]  bg-red-500  p-2 text-white rounded-full hover:bg-red-300"
+            className="sm:w-[12%]  bg-red-500  p-2 text-white rounded-full hover:bg-red-300"
           >
             Logout
           </button>

@@ -14,17 +14,17 @@ const PeopleCard = ({ user, loggedIn }) => {
       <div className="border-b px-4 pb-6">
         <div className="text-center my-4">
           <img
-            className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 mx-auto my-4"
+            className="h-32 w-32 rounded-full border-4  border-gray-800 mx-auto my-4"
             src={user?.image}
             alt=""
           />
           <div className="py-2">
-            <h3 className="font-bold text-2xl text-gray-800 dark:text-white mb-1">
+            <h3 className="font-bold text-2xl  text-white mb-1">
               {user?.name}
             </h3>
-            <div className="inline-flex text-gray-700 dark:text-gray-300 items-center">
+            <div className="inline-flex  text-gray-300 items-center">
               <svg
-                className="h-5 w-5 text-gray-400 dark:text-gray-600 mr-1"
+                className="h-5 w-5  text-gray-600 mr-1"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -47,14 +47,14 @@ const PeopleCard = ({ user, loggedIn }) => {
             (follower) => follower._id === loggedIn.user._id
           ) ? (
             <button
-              className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white dark:text-white antialiased font-bold px-4 py-2"
+              className="flex-1 rounded-full  bg-blue-800  text-white antialiased font-bold px-4 py-2"
               disabled={true}
             >
               Following
             </button>
           ) : (
             <button
-              className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white dark:text-white antialiased font-bold  hover:bg-blue-800 dark:hover:bg-blue-900  px-4 py-2"
+              className="flex-1 rounded-full  bg-blue-800 text-white antialiased font-bold   hover:bg-blue-900  px-4 py-2"
               type="submit"
               onClick={() => {
                 const data = { personId: user?._id };
@@ -67,7 +67,7 @@ const PeopleCard = ({ user, loggedIn }) => {
             </button>
           )}
           <button
-            className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2"
+            className="flex-1 rounded-full border-2  border-gray-700 font-semibold  text-white px-4 py-2"
             onClick={seePost}
           >
             See Posts
@@ -75,9 +75,9 @@ const PeopleCard = ({ user, loggedIn }) => {
         </div>
       </div>
       <div className="px-4 py-4">
-        <div className="flex gap-2 items-center text-gray-800 dark:text-gray-300 mb-4">
+        <div className="flex gap-2 items-center  text-gray-300 mb-4">
           <svg
-            className="h-6 w-6 text-gray-600 dark:text-gray-400"
+            className="h-6 w-6  text-gray-400"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -91,7 +91,7 @@ const PeopleCard = ({ user, loggedIn }) => {
           </svg>
           <span>
             {user?.followers.length > 1 ? (
-              <strong className="text-black dark:text-white">
+              <strong className="text-white">
                 {user?.followers.length} Followers
               </strong>
             ) : (
@@ -105,14 +105,14 @@ const PeopleCard = ({ user, loggedIn }) => {
           <div className="flex justify-end mr-2">
             {user?.followers.slice(0, 4).map((post, index) => (
               <img
-                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
+                className="border-2  border-gray-800 rounded-full h-10 w-10 -mr-2"
                 src={post.image}
                 alt=""
               />
             ))}
 
             {user?.followers.length > 4 && (
-              <span className="flex items-center justify-center bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-white font-semibold border-2 border-gray-200 dark:border-gray-700 rounded-full h-10 w-10">
+              <span className="flex items-center justify-center  bg-gray-800 text-sm  text-white font-semibold border-2  border-gray-700 rounded-full h-10 w-10">
                 +{user?.followers.length - 4}
               </span>
             )}
