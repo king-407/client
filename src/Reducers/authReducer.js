@@ -30,16 +30,13 @@ export const createUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async (data, { rejectWithValue }) => {
-    const response = await fetch(
-      "https://backend-3lx5pmotf-shivams-projects-c20dc989.vercel.app/user/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const response = await fetch("http://3.25.202.222:5000/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
     try {
       const result = await response.json();
