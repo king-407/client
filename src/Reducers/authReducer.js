@@ -30,7 +30,7 @@ export const createUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async (data, { rejectWithValue }) => {
-    const response = await fetch("user/login", {
+    const response = await fetch("/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
