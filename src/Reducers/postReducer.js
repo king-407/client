@@ -9,13 +9,16 @@ export const getAllPosts = createAsyncThunk(
     const responseDataObject = JSON.parse(user);
     const token = responseDataObject.token;
     try {
-      const response = await fetch("http://localhost:5000/posts/getAllPosts", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "http://3.25.202.222:5000/posts/getAllPosts",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
@@ -39,7 +42,7 @@ export const getAllUserPost = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `http://localhost:5000/posts/getAllPosts/${userId}`,
+        `http://3.25.202.222:5000/posts/getAllPosts/${userId}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +79,7 @@ export const createPost = createAsyncThunk(
     formData.append("image", data.image);
 
     formData.append("category", data.category);
-    const response = await fetch("http://localhost:5000/posts/create", {
+    const response = await fetch("http://3.25.202.222:5000/posts/create", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,7 +107,7 @@ export const getPostById = createAsyncThunk(
     const token = responseDataObject.token;
     try {
       const response = await fetch(
-        `http://localhost:5000/posts/getPosts/${postId}`,
+        `http://3.25.202.222:5000/posts/getPosts/${postId}`,
         {
           method: "GET",
           headers: {

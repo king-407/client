@@ -8,7 +8,7 @@ export const sendToken = createAsyncThunk(
     console.log(data);
     try {
       const response = await fetch(
-        "http://localhost:5000/user/forgot-password",
+        "http://3.25.202.222:5000/user/forgot-password",
         {
           method: "POST",
           headers: {
@@ -33,7 +33,7 @@ export const changePassword = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `http://localhost:5000/user/resetPassword/${resetId}`,
+        `http://3.25.202.222:5000/user/resetPassword/${resetId}`,
         {
           method: "POST",
           headers: {

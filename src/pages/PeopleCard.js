@@ -4,7 +4,6 @@ import { followUser, getAllUser } from "../Reducers/userReducer";
 import { useNavigate } from "react-router-dom";
 
 const PeopleCard = ({ user, loggedIn }) => {
-  console.log(user);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const seePost = () => {

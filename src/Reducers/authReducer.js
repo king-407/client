@@ -12,7 +12,7 @@ export const createUser = createAsyncThunk(
     formData.append("password", data.password);
     formData.append("user_name", data.user_name);
     formData.append("image", data.image);
-    const response = await fetch("http://localhost:5000/user/signup", {
+    const response = await fetch("http://3.25.202.222:5000/user/signup", {
       method: "POST",
 
       body: formData,
@@ -30,7 +30,7 @@ export const createUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async (data, { rejectWithValue }) => {
-    const response = await fetch("http://localhost:5000/user/login", {
+    const response = await fetch("http://3.25.202.222:5000/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

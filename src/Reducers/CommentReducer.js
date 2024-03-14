@@ -10,7 +10,7 @@ export const getAllComments = createAsyncThunk(
     const token = responseDataObject.token;
     try {
       const response = await fetch(
-        `http://localhost:5000/comments/getAllCommentsOfaPost/${postId}`,
+        `http://3.25.202.222:5000/comments/getAllCommentsOfaPost/${postId}`,
         {
           method: "GET",
           headers: {
@@ -43,7 +43,7 @@ export const writeComment = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `http://localhost:5000/comments/writeComment`,
+        `http://3.25.202.222:5000/comments/writeComment`,
         {
           method: "POST",
           headers: {
