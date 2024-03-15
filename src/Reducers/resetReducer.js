@@ -8,7 +8,7 @@ export const sendToken = createAsyncThunk(
     console.log(data);
     try {
       const response = await fetch(
-        "http://3.25.202.222:5000/user/forgot-password",
+        "https://shiv-backend.shop/user/forgot-password",
         {
           method: "POST",
           headers: {
@@ -33,7 +33,7 @@ export const changePassword = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `http://3.25.202.222:5000/user/resetPassword/${resetId}`,
+        `https://shiv-backend.shop/user/resetPassword/${resetId}`,
         {
           method: "POST",
           headers: {

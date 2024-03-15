@@ -11,7 +11,7 @@ export const getAllUser = createAsyncThunk(
     const token = responseDataObject.token;
 
     try {
-      const response = await fetch("http://3.25.202.222:5000/user/getUser", {
+      const response = await fetch("https://shiv-backend.shop/user/getUser", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const followUser = createAsyncThunk(
     const responseDataObject = JSON.parse(user);
     const token = responseDataObject.token;
     try {
-      const response = await fetch("http://3.25.202.222:5000/user/follow", {
+      const response = await fetch("https://shiv-backend.shop/user/follow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

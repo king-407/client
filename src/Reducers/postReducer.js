@@ -10,7 +10,7 @@ export const getAllPosts = createAsyncThunk(
     const token = responseDataObject.token;
     try {
       const response = await fetch(
-        "http://3.25.202.222:5000/posts/getAllPosts",
+        "https://shiv-backend.shop/posts/getAllPosts",
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ export const getAllUserPost = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `http://3.25.202.222:5000/posts/getAllPosts/${userId}`,
+        `https://shiv-backend.shop/posts/getAllPosts/${userId}`,
         {
           method: "GET",
           headers: {
@@ -79,7 +79,7 @@ export const createPost = createAsyncThunk(
     formData.append("image", data.image);
 
     formData.append("category", data.category);
-    const response = await fetch("http://3.25.202.222:5000/posts/create", {
+    const response = await fetch("https://shiv-backend.shop/posts/create", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ export const getPostById = createAsyncThunk(
     const token = responseDataObject.token;
     try {
       const response = await fetch(
-        `http://3.25.202.222:5000/posts/getPosts/${postId}`,
+        `https://shiv-backend.shop/posts/getPosts/${postId}`,
         {
           method: "GET",
           headers: {
